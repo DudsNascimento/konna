@@ -14,6 +14,9 @@ plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.20"
 
+    //To publish to AWS codeartifact
+    id("maven-publish")
+
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
@@ -47,8 +50,30 @@ dependencies {
 }
 
 group = "kotlin.konna"
+val artifact = "konna"
 version = "0.0.1"
 application {
     // Define the main class for the application.
     mainClass.set("com.konna.AppKt")
+}
+
+publishing {
+  publications {
+    create<MavenPublication>("maven") {
+        groupId = "$group"
+        artifactId = "$artifact"
+        version = "$version"
+
+        from(components["java"])
+    }
+  }
+  repositories {
+      maven {
+          url = uri("https://tiago-nascimento-473200936731.d.codeartifact.us-east-2.amazonaws.com/maven/konna/")
+          credentials {
+              username = "aws"
+              password = System.getenv("CODEARTIFACT_AUTH_TOKEN")
+          }
+      }
+  }
 }
