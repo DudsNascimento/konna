@@ -9,10 +9,11 @@
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val koin_version: String by project
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.4.20"
+    id("org.jetbrains.kotlin.jvm") version "1.5.10"
 
     //To publish to AWS codeartifact
     id("maven-publish")
@@ -45,8 +46,14 @@ dependencies {
     // Ktor dependencies
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-gson:$ktor_version")
+    implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+
+    // Koin dependencies
+    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+    testImplementation("io.insert-koin:koin-test-junit4:$koin_version")
 }
 
 group = "kotlin.konna"
@@ -55,6 +62,12 @@ version = "0.0.1"
 application {
     // Define the main class for the application.
     mainClass.set("com.konna.AppKt")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = application.mainClass
+    }
 }
 
 publishing {
