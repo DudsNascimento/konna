@@ -1,8 +1,0 @@
-version: "3.9"
-services:
-  konna:
-    environment:
-        - ENV_VERSION=${ENV_VERSION}
-    build: .
-    ports:
-      - "8080:8080"

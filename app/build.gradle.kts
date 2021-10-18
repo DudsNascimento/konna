@@ -68,6 +68,9 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = application.mainClass
     }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
 }
 
 publishing {

@@ -15,7 +15,7 @@ class ApplicationTest {
     @Test
     fun testRoot() {
         withTestApplication({ configureRouting() }) {
-            handleRequest(HttpMethod.Get, "/api/").apply {
+            handleRequest(HttpMethod.Get, "").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("Welcome to Konna!", response.content)
             }

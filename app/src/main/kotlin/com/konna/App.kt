@@ -82,7 +82,7 @@ fun Application.configureJson() {
 fun Application.configureRouting() {
     val athletesController by inject<AthletesController>()
     routing {
-        get("/api/") {
+        get("") {
             call.respondText("Welcome to Konna!")
         }
 
