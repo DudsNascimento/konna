@@ -16,7 +16,7 @@ data "terraform_remote_state" "eks" {
   backend = "local"
 
   config = {
-    path = "../terraform-mutant-finder-eks-cluster/terraform.tfstate"
+    path = "../terraform-konna-eks-cluster/terraform.tfstate"
   }
 }
 
@@ -52,8 +52,8 @@ resource "kubernetes_namespace" "prod_namespace" {
 
 resource "kubernetes_deployment" "konna" {
   metadata {
-    name = "scalable-mutant-finder"
-    namespace = "${kubernetes_namespace.prod_namespace.metadata.name}"
+    name = "scalable-konna"
+    namespace = "${kubernetes_namespace.prod_namespace.metadata[0].name}"
     labels = {
       App = "ScalableMutantFinder"
     }
@@ -76,10 +76,10 @@ resource "kubernetes_deployment" "konna" {
         container {
           image = "473200936731.dkr.ecr.us-east-2.amazonaws.com/konna:v0.0.1"
           image_pull_policy = "Always"
-          name  = "mutant-finder"
+          name  = "konna"
 
           port {
-            container_port = 5000
+            container_port = 8080
           }
 
           resources {
@@ -100,8 +100,8 @@ resource "kubernetes_deployment" "konna" {
 
 resource "kubernetes_service" "konna" {
   metadata {
-    name = "mutant-finder"
-    namespace = "prod-namespace"
+    name = "konna"
+    namespace = "${kubernetes_namespace.prod_namespace.metadata[0].name}"
   }
   spec {
     selector = {
@@ -109,7 +109,7 @@ resource "kubernetes_service" "konna" {
     }
     port {
       port        = 80
-      target_port = 5000
+      target_port = 8080
     }
 
     type = "LoadBalancer"

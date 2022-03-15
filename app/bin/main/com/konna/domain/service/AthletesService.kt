@@ -3,6 +3,8 @@ package com.konna.domain.service
 import java.time.LocalDateTime
 import java.util.UUID
 
+import org.slf4j.LoggerFactory
+
 import com.konna.application.exception.ResourceNotFoundException
 import com.konna.domain.entity.Athlete
 import com.konna.domain.entity.Track
@@ -28,11 +30,18 @@ class AthletesServiceImpl(
     val races: MutableList<Race>
 ): AthletesService {
 
+    companion object {
+        val logger = LoggerFactory.getLogger(AthletesServiceImpl::class.java.simpleName)
+    }
+
     override fun findAthlete(id: UUID): Athlete =
         athletes.find { it.id == id }
             ?: throw ResourceNotFoundException("Athlete with id ${id} not found")
 
-    override fun listAthletes(): List<Athlete> = athletes
+    override fun listAthletes(): List<Athlete> {
+        logger.info("Executing action to list athletes")
+        return athletes
+    }
 
     override fun saveAthlete(athlete: Athlete): Athlete =
         athlete.takeIf { it.id != null }

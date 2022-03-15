@@ -92,6 +92,7 @@ fun Application.configureRouting() {
             )
         }
         get("/api/athletes") {
+            call.application.environment.log.info("List athletes")
             call.respond(athletesController.listAthletes())
         }
         post("/api/athletes") {
