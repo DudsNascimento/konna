@@ -5,3 +5,7 @@ variable "konnaContainerName" {
 variable "konnaDockerImageUrl" {
   description = "Konna docker image URL"
 }
+
+variable "konnaLogGroup" {
+  description = "konna-log-group"
+}

@@ -9,6 +9,8 @@
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val logback_json_version: String by project
+val jackson_version: String by project
 val koin_version: String by project
 
 plugins {
@@ -49,6 +51,9 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktor_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("ch.qos.logback.contrib:logback-json-classic:$logback_json_version")
+    implementation("ch.qos.logback.contrib:logback-jackson:$logback_json_version")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jackson_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 
     // Koin dependencies

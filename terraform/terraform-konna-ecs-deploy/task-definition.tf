@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "konna_deploy_ecs_task_definition" {
       "logConfiguration": {
           "logDriver": "awslogs",
           "options": {
-              "awslogs-group": "konna-log-group",
+              "awslogs-group": "${var.konnaLogGroup}",
               "awslogs-region": "sa-east-1",
               "awslogs-stream-prefix": "awslogs-konna"
           }
@@ -27,11 +27,11 @@ resource "aws_ecs_task_definition" "konna_deploy_ecs_task_definition" {
   network_mode             = "awsvpc"
   memory                   = 512
   cpu                      = 256
-  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  execution_role_arn       = "${aws_iam_role.ecs_task_execution_role.arn}"
 }
 
-resource "aws_iam_role" "ecsTaskExecutionRole" {
-  name               = "ecsTaskExecutionRole"
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name               = "ecs_task_execution_role"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
-  role       = "${aws_iam_role.ecsTaskExecutionRole.name}"
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
+  role       = "${aws_iam_role.ecs_task_execution_role.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
